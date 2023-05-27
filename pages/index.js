@@ -1,6 +1,6 @@
-import dynamic from "next/dynamic";
-import { useEffect, useState, useRef } from "react";
-import styles from "../styles/Snake.module.css";
+import dynamic from 'next/dynamic';
+import { useEffect, useState, useRef } from 'react';
+import styles from '../styles/Snake.module.css';
 
 const Config = {
   height: 25,
@@ -9,9 +9,9 @@ const Config = {
 };
 
 const CellType = {
-  Snake: "snake",
-  Food: "food",
-  Empty: "empty",
+  Snake: 'snake',
+  Food: 'food',
+  Empty: 'empty',
 };
 
 const Direction = {
@@ -26,14 +26,14 @@ const Cell = ({ x, y, type }) => {
     switch (type) {
       case CellType.Snake:
         return {
-          backgroundColor: "yellowgreen",
+          backgroundColor: 'yellowgreen',
           borderRadius: 8,
           padding: 2,
         };
 
       case CellType.Food:
         return {
-          backgroundColor: "darkorange",
+          backgroundColor: 'darkorange',
           borderRadius: 20,
           width: 32,
           height: 32,
@@ -88,13 +88,27 @@ const Snake = () => {
         // make a new snake by extending head
         // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax
         const newSnake = [newHead, ...snake];
-
+         
         // remove tail
-        newSnake.pop();
+         if (!isFood(newHead)) {
+          newSnake.pop();
+        // setScore((score) => score + 1);
 
-        return newSnake;
-      });
-    };
+        // let newFood = getRandomCell();
+        // while (isSnake(newFood)) {
+        //   newFood = getRandomCell();
+        // }
+
+        // setFood(newFood); 
+      } 
+      // else {
+       
+      //   newSnake.pop();
+      // }
+
+      return newSnake;
+    });
+  };
 
     runSingleStep();
     const timer = setInterval(runSingleStep, 500);
@@ -120,22 +134,33 @@ const Snake = () => {
   }, [snake]);
 
   useEffect(() => {
+    const directionHandle = (direction, oppDirection) => {
+      setDirection((curDirection) => {
+        if (curDirection == oppDirection) {
+          return curDirection;
+        } 
+        else {
+       return direction;
+        }
+      });
+    };
+   
     const handleNavigation = (event) => {
       switch (event.key) {
         case "ArrowUp":
-          setDirection(Direction.Top);
+          directionHandle(Direction.Top, Direction.Bottom);
           break;
 
         case "ArrowDown":
-          setDirection(Direction.Bottom);
+          directionHandle(Direction.Bottom, Direction.Top);
           break;
 
         case "ArrowLeft":
-          setDirection(Direction.Left);
+          directionHandle(Direction.Left, Direction.Right);
           break;
 
         case "ArrowRight":
-          setDirection(Direction.Right);
+          directionHandle(Direction.Right, Direction.Left);
           break;
       }
     };

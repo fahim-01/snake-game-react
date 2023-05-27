@@ -3,12 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3005 next dev",
+    "dev": "set PORT=3005 && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "test": "jest"
   },
+  
   "dependencies": {
     "next": "11.1.0",
     "react": "17.0.2",
